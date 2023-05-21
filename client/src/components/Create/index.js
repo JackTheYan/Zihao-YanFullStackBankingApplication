@@ -1,0 +1,199 @@
+import { Alert, Button, Form, Input, Tabs, Radio, Row, DatePicker } from 'antd';
+import moment from 'moment';
+import Cookies from 'js-cookie';
+import React, { useEffect, useState } from 'react';
+import { history } from 'umi';
+import { connect } from 'dva';
+
+import { getGlobalLoginEffects } from '@/models/login';
+import { github } from '@/config/login';
+import { encryptFun } from '@/utils/request';
+
+
+
+
+const LoginForm = ({ form, dispatch, type = 'login', onSuccess }) => {
+
+
+  const { getFieldDecorator } = form;
+
+  
+
+  async function handleOnSubmit() {
+    const values = await form.validateFields();
+    const encryptText = encryptFun(values.password);
+    if (values.birthday) {
+      values.birthday = moment(values.birthday).format('YYYY-MM-DD');
+    }
+
+    await dispatch({
+      type: getGlobalLoginEffects('createNoLogin'),
+      payload: {
+        ...values,
+        password: encryptText,
+      },
+    });
+
+    if(onSuccess) {
+        onSuccess()
+    }
+  }
+
+  return (
+    <Form
+      labelAlign="left"
+      labelCol={{ span: 5 }}
+      wrapperCol={{ span: 18 }}
+      form={form}
+    >
+      <Row>
+        <Form.Item label="Username">
+          {getFieldDecorator('username', {
+            rules: [
+              {
+                required: true,
+                message: 'Username required',
+                whitespace: true,
+              },
+            ],
+          })(
+            <Input
+              autoFocus
+              placeholder="账号"
+              className="v2-soc-input"
+              style={{
+                height: 40,
+                background: '#fff',
+                color: '#18191a',
+              }}
+            />,
+          )}
+        </Form.Item>
+        <Form.Item label="Password">
+          {getFieldDecorator('password', {
+            rules: [
+              {
+                required: true,
+                message: 'Password required',
+                whitespace: true,
+              },
+              {
+                pattern: /^[\S]{6,}$/,
+                message: '密码不能小于6位',
+              },
+            ],
+          })(
+            <Input.Password
+              placeholder="password"
+              className="v2-soc-input"
+              style={{
+                height: 40,
+                background: '#fff',
+                color: '#18191a',
+              }}
+              onPressEnter={handleOnSubmit}
+            />,
+          )}
+        </Form.Item>
+        <Form.Item label="Email">
+          {getFieldDecorator('email', {
+            rules: [
+              {
+                type: 'email',
+                required: true,
+                message: '请输入正确的email',
+                whitespace: true,
+              },
+            ],
+          })(
+            <Input
+              placeholder="Email"
+              className="v2-soc-input"
+              style={{
+                height: 40,
+                background: '#fff',
+                color: '#18191a',
+              }}
+              onPressEnter={handleOnSubmit}
+            />,
+          )}
+        </Form.Item>
+        {type !== 'login' && (
+          <>
+            <Form.Item label="生日">
+              {getFieldDecorator('birthday', {
+                rules: [
+                  {
+                    required: true,
+                    message: '请选择日期',
+                  },
+                ],
+              })(
+                <DatePicker
+                  disabledDate={(current) =>
+                    current && current > moment().endOf('day')
+                  }
+                />,
+              )}
+            </Form.Item>
+            <Form.Item label="Sex">
+              {getFieldDecorator('sex', {
+                initialValue: 'male',
+                rules: [
+                  {
+                    required: true,
+                    message: '请选择性别',
+                  },
+                ],
+              })(
+                <Radio.Group>
+                  <Radio value="male">Male</Radio>
+                  <Radio value="female">Female</Radio>
+                </Radio.Group>,
+              )}
+            </Form.Item>
+            <Form.Item label="角色">
+              {getFieldDecorator('role', {
+                initialValue: 1,
+                rules: [
+                  {
+                    required: true,
+                    message: '请选择角色',
+                  },
+                ],
+              })(
+                <Radio.Group>
+                  <Radio value={1}> admin </Radio>
+                  <Radio value={0}>customer </Radio>
+                </Radio.Group>,
+              )}
+            </Form.Item>
+          </>
+        )}
+      </Row>
+      <p>
+        其他方式登录：
+        <a
+          href={`https://github.com/login/oauth/authorize?client_id=${github.client_id}&redirect_uri=${github.redirect_uri}`}
+        >
+          github
+        </a>
+      </p>
+      <Button
+        className="v2-soc-button primary"
+        style={{ width: '100%', height: 40 }}
+        onClick={handleOnSubmit}
+      >
+        {type === 'login' ? 'Login' : 'Create'}
+      </Button>
+    </Form>
+  );
+
+ 
+
+  
+};
+
+export default connect(({ BadBank_login }) => ({
+  loginModel: BadBank_login,
+}))(Form.create()(LoginForm));

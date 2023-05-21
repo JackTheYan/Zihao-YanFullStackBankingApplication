@@ -1,0 +1,13 @@
+{
+  "name": "bad-bank",
+  "version": "1.0.0",
+  "description": "## Getting Started",
+  "main": "index.js",
+  "scripts": {
+    "dev:server": "cd ./server && npm run start",
+    "dev:client": "cd ./client && npm run start",
+    "build": "cd ./client && npm run build"
+  },
+  "author": "",
+  "license": "ISC"
+}

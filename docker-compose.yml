@@ -1,0 +1,21 @@
+version: '3.6'
+
+services:
+  client:
+    container_name: "cient"
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+  server:
+    container_name: "server"
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    depends_on:
+      - database
+
+  database:
+    container_name: mongo
+    image: mongo
+    ports:
+      - "27017:27017"

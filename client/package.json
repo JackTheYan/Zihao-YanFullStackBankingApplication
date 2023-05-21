@@ -1,0 +1,67 @@
+{
+  "private": true,
+  "name": "bad-bank",
+  "version": "1.0.0",
+  "description": "An out-of-box UI solution for enterprise applications",
+  "scripts": {
+    "start": "cross-env APP_TYPE=site umi dev",
+    "start:no-mock": "cross-env UMI_UI=none MOCK=none umi dev",
+    "build": "cross-env NODE_OPTIONS=--max_old_space_size=4096 umi build",
+    "xls2json": "node ./scripts/xls2json.js",
+    "analyze": "cross-env ANALYZE=1 umi build"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.5.6",
+    "ahooks": "^2.4.0",
+    "antd": "^3.20.1",
+    "axios": "^1.4.0",
+    "babel-runtime": "^6.26.0",
+    "classnames": "2.2.6",
+    "crypto-js": "^3.3.0",
+    "d3": "5.9.2",
+    "dva": "^2.6.0-beta.16",
+    "js-cookie": "2.2.0",
+    "jsplumb": "^2.12.8",
+    "lodash": "^4.17.15",
+    "moment": "^2.29.4",
+    "prettier": "^2.0.5",
+    "react": "^16.8.6",
+    "react-color": "^2.19.3",
+    "react-dom": "^16.8.6",
+    "react-router-dom": "4.3.1",
+    "redux": "^4.0.5",
+    "umi": "^3.2.20",
+    "umi-request": "^1.2.19",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.21.8",
+    "@types/history": "^4.7.2",
+    "@types/jsplumb": "^2.5.7",
+    "@types/lodash": "^4.14.149",
+    "@types/react": "16.8.6",
+    "@types/react-dom": "16.9.4",
+    "@types/react-helmet": "^5.0.13",
+    "@umijs/plugin-blocks": "^2.2.1",
+    "@umijs/plugin-esbuild": "^1.1.0",
+    "@umijs/preset-ant-design-pro": "^1.2.2",
+    "@umijs/preset-react": "1.6.4",
+    "@umijs/preset-ui": "^2.2.1",
+    "antd-pro-merge-less": "1.0.0"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 10"
+  ],
+  "checkFiles": [
+    "src/**/*.js*",
+    "src/**/*.ts*",
+    "src/**/*.less",
+    "config/**/*.js*",
+    "scripts/**/*.js"
+  ]
+}
